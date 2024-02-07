@@ -1,0 +1,255 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *Llink;
+    struct node *Rlink;
+};
+
+struct node *head = NULL, *ptr;
+
+void display()
+{
+    int count = 0;
+    if (head == NULL)
+    {
+        printf("Empty...");
+    }
+    else
+    {
+        ptr = head;
+        while (ptr != NULL)
+        {
+            printf("%d\t", ptr->data);
+            ptr = ptr->Rlink;
+            //count++;
+        }
+    }
+   // printf("\nCount is %d\n", count);
+}
+
+void insertf(int x)
+{
+    struct node *new;
+    new = ((struct node *)malloc(sizeof(struct node)));
+    new->data = x;
+    new->Rlink = new->Llink = NULL;
+    if(head==NULL)
+    {
+        head = new;
+    }
+    else
+    {
+        new->Rlink=head;
+        head->Llink=new;
+        head=new;
+    }
+    
+}
+
+void insertend(int x)
+{
+    struct node *new;
+    new = ((struct node *)malloc(sizeof(struct node)));
+    new->data = x;
+    new->Rlink = new->Llink = NULL;
+    
+    if(head==NULL)
+    {
+        head = new;
+    }
+    else
+    {
+        ptr=head;
+        while(ptr->Rlink!=NULL)
+        {
+            ptr=ptr->Rlink;
+        }
+        ptr->Rlink=new;
+        new->Llink=ptr;
+    }
+    
+}
+
+void insertsp(int x, int key)
+{
+    if (head == NULL)
+    {
+        printf("Empty...");
+    }
+    else
+    {
+        struct node *ptr = head;
+        while ((ptr->data != key) && ptr->Rlink != NULL )
+        {
+            ptr = ptr->Rlink;
+        }
+        if (ptr->data!=key)
+        {
+            printf("No element\n");
+        }
+        else
+        {
+            struct node *new;
+            new = ((struct node *)malloc(sizeof(struct node)));
+            new->data = x;
+            new->Llink = ptr;
+            new->Rlink = ptr->Rlink;
+            if(new->Rlink != NULL)
+            {
+                new->Rlink->Llink=new;
+            }
+            ptr->Rlink=new;
+            
+        }
+    }
+}
+void deletef()
+{
+    if (head == NULL)
+    {
+        printf("Empty...");
+    }
+    else if(head->Rlink==NULL)
+    {
+        struct node *temp=head;
+        head=NULL;
+        free(temp);
+    }
+    else
+    {
+        head=head->Rlink;
+        free(head->Llink);
+        head->Llink=NULL;
+    }
+}
+void deletee()
+{
+    if (head == NULL)
+    {
+        printf("Empty...");
+    }
+    else if(head->Rlink==NULL)
+    {
+        struct node *temp=head;
+        head=NULL;
+        free(temp);
+    }
+    else
+    {
+       ptr=head;
+       while(ptr->Rlink!=NULL)
+       {
+           ptr=ptr->Rlink;
+       }
+       ptr->Llink->Rlink=NULL;
+       free(ptr);
+    }
+}
+void deletesp(int key)
+{
+    if (head == NULL)
+    {
+        printf("Empty...");
+    }
+    else if(head->Rlink==NULL)
+    {    if((head->data)==key)
+        {
+            struct node *temp=head;
+            head=NULL;
+            free(temp);
+        }
+        else
+        {
+            printf("Search data not found");
+        }
+    }
+    else if(head->data==key)
+    {
+        head=head->Rlink;
+        free(head->Llink);
+        head->Llink=NULL;
+    }
+    else
+    {
+        ptr=head;
+        while(ptr->data!=key && ptr->Rlink!=NULL)
+        {
+            ptr=ptr->Rlink;
+        }
+        if(ptr->data!=key)
+        {
+            printf("Not Found data");
+        }
+        else
+        {
+            ptr->Llink->Rlink=ptr->Rlink;
+            if(ptr->Rlink==NULL)
+            {
+                ptr->Rlink->Llink=ptr->Llink;
+            }
+            free(ptr);
+        }
+    }
+}
+int main()
+{
+    printf("Doubly linked List\n");
+    int a, b, c;
+    printf("1 Display \n2 Insert at Beginning\n3 Insert at End \n4 Insert at specified position\n5 Delete at beginninng\n6 Delete at end\n7 Delete at specified position\n8 Exit\n");
+    do
+    {
+        printf("\nEnter choice ");
+        scanf("%d", &a);
+        if (a == 1)
+        {
+            display();
+        }
+        else if (a == 2)
+        {
+            printf("Enter element ");
+            scanf("%d", &b);
+            insertf(b);
+        }
+        else if (a == 3)
+        {
+            printf("Enter element ");
+            scanf("%d", &b);
+            insertend(b);
+        }
+        else if (a == 4)
+        {
+            printf("Enter element ");
+            scanf("%d", &b);
+            printf("Enter position ");
+            scanf("%d", &c);
+            insertsp(b, c);
+        }
+        else if (a == 5)
+        {
+            deletef();
+        }
+        else if (a == 6)
+        {
+            
+            deletee();
+        }
+        else if (a == 7)
+        {
+            printf("Enter Data to delete ");
+            scanf("%d", &c);
+            deletesp(c);
+        }
+        else
+        {
+            printf("Exiting......");
+        }
+    } while (a != 8);
+
+    return 0;
+}
+
+
+
